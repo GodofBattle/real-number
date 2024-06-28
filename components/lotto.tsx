@@ -15,7 +15,7 @@ const Lotto = ({ seq = 1, data }: { seq?: number; data: LOTTO }) => {
         } else if (data.BONUS === digit) {
             style += " bg-orange-300 text-black";
         } else {
-            style += " bg-gray-400 text-gray-200";
+            style += " bg-gray-300 text-gray-200";
         }
 
         return style;

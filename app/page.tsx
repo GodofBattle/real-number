@@ -7,19 +7,35 @@ import { MouseEventHandler, useState } from "react";
 
 export default function Home() {
     const [lotto, setLotto] = useState<Array<LOTTO>>([]);
-    const [i, setI] = useState<number>(0);
+    const [sequnce, setSequnce] = useState<number>(1111);
 
-    const pushLotto: MouseEventHandler = () => {
-        setI(i + 1);
+    const pushLotto: MouseEventHandler = async () => {
+        setSequnce(sequnce + 1);
+
+        const res = await fetch(`/api/lotto/generate/${sequnce}`);
+        const { result } = await res.json();
 
         const nextLotto: LOTTO = {
-            IDX: i,
+            IDX: sequnce,
             PICK_DATE: new Date(),
-            NUMBERS: [12, 20, 30, 40, 41, 42],
-            BONUS: 32,
+            NUMBERS: [
+                result.drwtNo1,
+                result.drwtNo2,
+                result.drwtNo3,
+                result.drwtNo4,
+                result.drwtNo5,
+                result.drwtNo6,
+            ],
+            BONUS: result.bnusNo,
         };
 
         setLotto([nextLotto, ...lotto]);
+    };
+
+    const pushTensorFlow = async () => {
+        const res = await fetch(`/api/lotto/ml`);
+        const { result } = await res.json();
+        console.info(result);
     };
 
     return (
@@ -30,11 +46,17 @@ export default function Home() {
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                         LOTTO
                     </h1>
-                    <GenerateButton pushLotto={pushLotto} />
+                    <div className="flex flex-row">
+                        <GenerateButton pushLotto={pushLotto} text="GENERATE" />
+                        <GenerateButton
+                            pushLotto={pushTensorFlow}
+                            text="TENSOR FLOW"
+                        />
+                    </div>
                 </div>
             </header>
-            <main>
-                <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <main className="min-h-full overflow-y-auto">
+                <div className="min-h-full mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                     {lotto.map((l, idx) => (
                         <Lotto key={idx} seq={l.IDX} data={l} />
                     ))}
