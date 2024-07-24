@@ -7,7 +7,7 @@ import { MouseEventHandler, useState } from "react";
 
 export default function Home() {
     const [lotto, setLotto] = useState<Array<LOTTO>>([]);
-    const [sequnce, setSequnce] = useState<number>(1111);
+    const [sequnce, setSequnce] = useState<number>(1100);
 
     const pushLotto: MouseEventHandler = async () => {
         setSequnce(sequnce + 1);
@@ -15,9 +15,11 @@ export default function Home() {
         const res = await fetch(`/api/lotto/generate/${sequnce}`);
         const { result } = await res.json();
 
+        console.info(result);
+
         const nextLotto: LOTTO = {
             IDX: sequnce,
-            PICK_DATE: new Date(),
+            PICK_DATE: new Date(result.drwNoDate),
             NUMBERS: [
                 result.drwtNo1,
                 result.drwtNo2,

@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 type LottoIdx = {
-    idx: number;
+    idx: string;
 }
 
 const hasSeq = async (idx: number) => {
@@ -11,15 +11,21 @@ const hasSeq = async (idx: number) => {
 }
 
 const GET = async (request: NextRequest, context: { params: LottoIdx }) => {
-    const idx = context.params.idx;
+    const idx: string = context.params.idx;
+
+    // if (await hasSeq(Number(idx))) {
+
+    // } else {
+
+    // }
 
     const response = await fetch(`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${idx}`, {
         credentials: 'same-origin',
-        mode: 'no-cors'
+        mode: 'no-cors',
+        cache: 'no-cache'
     });
 
-    let result = await response.json();
-
+    let result: ILottoDonghang = await response.json();
     return NextResponse.json({ result });
 }
 
