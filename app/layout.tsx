@@ -1,22 +1,35 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { ReactNode } from 'react';
+import type { Metadata, Viewport } from 'next';
+import { IBM_Plex_Mono } from 'next/font/google';
 
-const inter = Inter({ subsets: ["latin"] });
+import ThemeProvider from '@/components/theme-provider';
 
-export const metadata: Metadata = {
-    title: "MY REAL NUMBER",
-    description: "ALEX",
+import './globals.css';
+
+const ibm_plex_mono = IBM_Plex_Mono({ weight: '400' });
+
+const metadata: Metadata = {
+    title: 'MY REAL NUMBER',
+    description: 'ALEX',
 };
 
-export default function RootLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+};
+
+const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
     return (
-        <html lang="kr">
-            <body className={inter.className}>{children}</body>
+        <html lang='kr' suppressHydrationWarning>
+            <head />
+            <body className={`${ibm_plex_mono.className} antialiased`}>
+                <ThemeProvider attribute={'class'} defaultTheme='dark' enableSystem disableTransitionOnChange>
+                    {children}
+                </ThemeProvider>
+            </body>
         </html>
     );
-}
+};
+
+export default RootLayout;
+export { metadata, viewport };

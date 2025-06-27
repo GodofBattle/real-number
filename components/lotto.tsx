@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 const Lotto = ({ seq = 1, data }: { seq?: number; data: LOTTO }) => {
     const [bonus, setBonus] = useState<number>(data.BONUS);
     const [numbers, setNumbers] = useState<Array<number>>(data.NUMBERS);
 
-    const seqText = seq.toString().padStart(4, "0");
+    const seqText = seq.toString().padStart(4, '0');
 
     const pad = (idx: number) => {
-        return idx.toString().padStart(2, "0");
+        return idx.toString().padStart(2, '0');
     };
 
     const digitType = useCallback(
         (digit: number) => {
-            let style = "size-2.5 rounded-sm flex justify-center items-center";
+            let style = 'size-2.5 rounded-sm flex justify-center items-center';
 
             if (numbers.includes(digit)) {
-                style += " bg-red-700 text-white";
+                style += ' bg-red-700 text-white';
             } else if (bonus === digit) {
-                style += " bg-orange-300 text-black";
+                style += ' bg-orange-300 text-black';
             } else {
-                style += " bg-gray-300 text-gray-200";
+                style += ' bg-gray-200 text-gray-900 normal-num';
             }
 
             return style;
@@ -56,44 +56,41 @@ const Lotto = ({ seq = 1, data }: { seq?: number; data: LOTTO }) => {
         }
     }, [numbers, data]);
 
+    // const handlePointerOver = useCallback(() => {}, []);
+
     useEffect(() => {
         setNumbers([...data.NUMBERS]);
         setBonus(data.BONUS);
     }, [data]);
 
     return (
-        <div className="flex flex-wrap font-mono">
-            <button
-                className="text-pretty mr-1 py-1 hover:cursor-pointer"
-                onClick={handleInit}
-            >
+        <div className='flex flex-wrap'>
+            <button className='text-pretty mr-1 py-1 hover:cursor-pointer' onClick={handleInit}>
                 {seqText}
             </button>
-            <div className="flex flex-wrap">
+            <div className='flex flex-wrap'>
                 {Array(45)
                     .fill(0)
                     .map((_, index: number) => {
                         return (
                             <button
                                 key={index}
-                                className="flex flex-wrap items-center justify-center mx-0.5 hover:cursor-pointer"
-                                type="button"
+                                className='flex flex-wrap items-center justify-center mx-0.5 hover:cursor-pointer'
+                                type='button'
                                 onClick={() => handleClick(index + 1)}
                             >
-                                <div className={digitType(index + 1)}>
-                                    <div className="text-pretty scale-75 items-center">
-                                        {pad(index + 1)}
-                                    </div>
+                                <div className={`${digitType(index + 1)}`}>
+                                    <div className='text-pretty scale-75 items-center'>{pad(index + 1)}</div>
                                 </div>
                             </button>
                         );
                     })}
             </div>
-            <div className="text-pretty ml-1 py-1">
-                {data.PICK_DATE.toLocaleDateString("ko-KR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
+            <div className='text-pretty ml-1 py-1'>
+                {data.PICK_DATE.toLocaleDateString('ko-KR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
                 })}
             </div>
         </div>
