@@ -1,21 +1,22 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client"
+    output   = "../db/generated"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Lotto {
-  id    Int      @id(map: "lotto_pk") @default(autoincrement())
-  date  DateTime @unique(map: "lotto_unique") @db.Date
-  num1  Int
-  num2  Int
-  num3  Int
-  num4  Int
-  num5  Int
-  num6  Int
-  bonus Int
+    id    Int      @id(map: "lotto_pk") @default(autoincrement())
+    date  DateTime @unique(map: "lotto_unique") @db.Date
+    num1  Int
+    num2  Int
+    num3  Int
+    num4  Int
+    num5  Int
+    num6  Int
+    bonus Int
 }
